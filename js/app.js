@@ -38,13 +38,11 @@ $.getJSON(fourSquareUrl, function(data){
 	for (var i = 0; i < venues.length; i++){
 		var venue = venues[i];
 		$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
-        model.fourSquareLocsList.push(venue.name,venue.location.formattedAddress,venue.contact.formattedPhone,venue.location.postalCode,venue.location.distance,venue.location.lat,venue.location.lng]);
+        model.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePhone: venue.contact.formattedPhone, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
     };
 });
 
-
-
-          var model = {
+var model = {
 	// Empty list to store my infobox data from foursquare
 	fourSquareLocsList: [],
     // Empty list to store the lat/lng for my map markers
@@ -53,25 +51,28 @@ $.getJSON(fourSquareUrl, function(data){
 };
 
 for (var i = 0; i < model.fourSquareLocsList.length; i++) {
-          // Get the position from the fourSquareLocsList array.
-          var position = (model.fourSquareLocsList[i])[5];
-          console.log(position);
-          var title = locations[i].title;
+    // Get the position from the fourSquareLocsList array.
+    var title = model.fourSquareLocsList[i].venueTitle;
+    var position = [model.fourSquareLocsList[i].venueLat, model.fourSquareLocsList[i].venueLng];
+    console.log(title, position);
           // Create a marker per location, and put into markers array.
-          //var marker = new google.maps.Marker({
-            //map: map,
-            //position: position,
-            //title: title,
-            //animation: google.maps.Animation.DROP,
-            //id: i
-        }; // DON'T FORGET THE )!!!!!!!!!!!!!!!!!
-          // Push the marker to our array of markers.
-          //markers.push(marker);
+    //var marker = new google.maps.Marker({
+      //  map: map,
+      //  position: position,
+      //  title: title,
+      //  animation: google.maps.Animation.DROP,
+      //  id: i
+};
+
+
+// Push the marker to our array of markers.
+//model.mapMarkersList.push(marker);
 
 
 // ------------- ViewModel ------------- //
-
+/*
 var appViewModel = {
 	
 };
 
+*/
