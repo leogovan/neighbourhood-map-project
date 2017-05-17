@@ -6,7 +6,7 @@ function initMap() {
         	zoom: 14,
         	mapTypeControl: false
         });
-    }
+};
 
 
     /* Opens the drawer when the menu icon is clicked */
@@ -50,23 +50,28 @@ var model = {
 
 };
 
+
 for (var i = 0; i < model.fourSquareLocsList.length; i++) {
     // Get the position from the fourSquareLocsList array.
     var title = model.fourSquareLocsList[i].venueTitle;
     var position = [model.fourSquareLocsList[i].venueLat, model.fourSquareLocsList[i].venueLng];
+    console.log("is anything happening?");
     console.log(title, position);
-          // Create a marker per location, and put into markers array.
-    //var marker = new google.maps.Marker({
-      //  map: map,
-      //  position: position,
-      //  title: title,
-      //  animation: google.maps.Animation.DROP,
-      //  id: i
+
+    //Create a marker per location, and put into markers array.
+    var marker = new google.maps.Marker({
+        map: map,
+        position: position,
+        title: title,
+        animation: google.maps.Animation.DROP,
+        id: i 
+    });
+    console.log(marker);
 };
 
 
-// Push the marker to our array of markers.
-//model.mapMarkersList.push(marker);
+    // Push the marker to our array of markers.
+    model.mapMarkersList.push(marker);
 
 
 // ------------- ViewModel ------------- //
