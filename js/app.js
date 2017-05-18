@@ -30,16 +30,13 @@ var model = {
     // Empty list to store my infobox data from foursquare
     fourSquareLocsList: [],
     // Empty list to store the lat/lng for my map markers
-    mapMarkersList: []
-
+    mapMarkersList: [],
+    fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=10&intent=checkin&radius=1000&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
-
-
-var fourSquareUrl = "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=10&intent=checkin&radius=1000&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG";
 
 var $itemsList = $('#fourSquareList');
 
-$.getJSON(fourSquareUrl, function(data){
+$.getJSON(model.fourSquareUrl, function(data){
 	venues = data.response.venues;
 	for (var i = 0; i < venues.length; i++){
 		var venue = venues[i];
@@ -76,6 +73,8 @@ for (var i = 0; i < model.fourSquareLocsList.length; i++) {
 
 var appViewModel = {
 	
+
+
 };
 
 
