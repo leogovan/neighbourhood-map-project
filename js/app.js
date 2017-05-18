@@ -39,19 +39,24 @@ var model = {
 
 var appViewModel = {
     $itemsList: $('#fourSquareList'),
+    getFourSquareAPI: function (){
+    $.getJSON(model.fourSquareUrl, function(data){
+        venues = data.response.venues;
+        for (var i = 0; i < venues.length; i++){
+            var venue = venues[i];
+            appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
+            model.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePhone: venue.contact.formattedPhone, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
+        };
+    });
+    }
 
 };
 
+appViewModel.getFourSquareAPI();
+
 //var $itemsList = $('#fourSquareList');
 
-$.getJSON(model.fourSquareUrl, function(data){
-	venues = data.response.venues;
-	for (var i = 0; i < venues.length; i++){
-		var venue = venues[i];
-		appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
-        model.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePhone: venue.contact.formattedPhone, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
-    };
-});
+
 
 
 for (var i = 0; i < model.fourSquareLocsList.length; i++) {
