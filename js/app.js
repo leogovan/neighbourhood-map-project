@@ -34,13 +34,21 @@ var model = {
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=10&intent=checkin&radius=1000&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
-var $itemsList = $('#fourSquareList');
+
+// ------------- ViewModel ------------- //
+
+var appViewModel = {
+    $itemsList: $('#fourSquareList'),
+
+};
+
+//var $itemsList = $('#fourSquareList');
 
 $.getJSON(model.fourSquareUrl, function(data){
 	venues = data.response.venues;
 	for (var i = 0; i < venues.length; i++){
 		var venue = venues[i];
-		$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
+		appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
         model.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePhone: venue.contact.formattedPhone, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
     };
 });
@@ -67,15 +75,6 @@ for (var i = 0; i < model.fourSquareLocsList.length; i++) {
 
     // Push the marker to our array of markers.
     model.mapMarkersList.push(marker);
-
-
-// ------------- ViewModel ------------- //
-
-var appViewModel = {
-	
-
-
-};
 
 
 
