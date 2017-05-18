@@ -14,11 +14,15 @@
 		<div class="form-group">
 			<form class="form-inline">
 				<label for="filter-box" class="sr-only">FILTER</label>
-				<input type="text" id="filter-box" class="form-control" placeholder="Type here to filter results...">
+				<input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="text" id="filter-box" class="form-control" placeholder="Type here to filter results..." />
 			</form>
 		</div>
-		<div id="fourSquareList">
-			
+		<div id="fourSquareList" data-bind="foreach: fourSquareList">
+			<h3 data-bind="text: venueTitle"></h3>
+			<h4>Post Code</h4>
+			<p data-bind="text: venuePostCode"></p>
+			<h4>Distance</h4>
+			<p><span data-bind="text: venueDistance"></span> metres away</p>
 		</div>
 
 	</div>

@@ -28,9 +28,9 @@ function initMap() {
 
 var model = {
     // Empty list to store my infobox data from foursquare
-    fourSquareLocsList: [],
+    //fourSquareLocsList: [],
     // Empty list to store the lat/lng for my map markers
-    mapMarkersList: [],
+    //mapMarkersList: [],
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
@@ -38,21 +38,32 @@ var model = {
 // ------------- ViewModel ------------- //
 
 var appViewModel = {
-    $itemsList: $('#fourSquareList'),
+    
+    mapMarkersList: ko.observableArray(),
+    
+    fourSquareLocsList: ko.observableArray(),
+    
+    filter: ko.observable(""),
+    
+    //$itemsList: $('#fourSquareList'),
     // Call foursquare
     getFourSquareAPI: function (){
     $.getJSON(model.fourSquareUrl, function(data){
         venues = data.response.venues;
         for (var i = 0; i < venues.length; i++){
             var venue = venues[i];
-            // Write the list of venues to the DOM
-            appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
-            model.fourSquareLocsList.push({venueTitle: venue.name, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
+
+            // store the data in observable array
+            appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
+
+            // write the list of venues to the DOM
+            //appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
+            
             };
-            for (var i = 0; i < model.fourSquareLocsList.length; i++) {
+            for (var i = 0; i < appViewModel.fourSquareLocsList.length; i++) {
                 // Get the position date from the fourSquareLocsList array
-                var title = model.fourSquareLocsList[i].venueTitle;
-                var position = {lat: model.fourSquareLocsList[i].venueLat, lng: model.fourSquareLocsList[i].venueLng};
+                var title = appViewModel.fourSquareLocsList[i].venueTitle;
+                var position = {lat: appViewModel.fourSquareLocsList[i].venueLat, lng: appViewModel.fourSquareLocsList[i].venueLng};
                 //Create a marker per location, and put into markers array.
                 var marker = new google.maps.Marker({
                     map: map,
@@ -61,10 +72,10 @@ var appViewModel = {
                     animation: google.maps.Animation.DROP,
                     id: i 
                 });
-                model.mapMarkersList.push(marker);
+                appViewModel.mapMarkersList.push(marker);
             };
         });
-    }
+    },
 };
 
 appViewModel.getFourSquareAPI();
