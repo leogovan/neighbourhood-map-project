@@ -53,7 +53,6 @@ var appViewModel = {
                 // Get the position date from the fourSquareLocsList array
                 var title = model.fourSquareLocsList[i].venueTitle;
                 var position = {lat: model.fourSquareLocsList[i].venueLat, lng: model.fourSquareLocsList[i].venueLng};
-                console.log(position);
                 //Create a marker per location, and put into markers array.
                 var marker = new google.maps.Marker({
                     map: map,
@@ -62,7 +61,7 @@ var appViewModel = {
                     animation: google.maps.Animation.DROP,
                     id: i 
                 });
-                console.log(marker);
+                model.mapMarkersList.push(marker);
             };
         });
     }
@@ -81,7 +80,7 @@ appViewModel.getFourSquareAPI();
     });*/
 
     // Push the marker to our array of markers.
-    //model.mapMarkersList.push(marker);
+    //;
 
 
 
