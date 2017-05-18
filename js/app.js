@@ -31,7 +31,7 @@ var model = {
     fourSquareLocsList: [],
     // Empty list to store the lat/lng for my map markers
     mapMarkersList: [],
-    fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=10&intent=checkin&radius=1000&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
+    fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
 
@@ -39,47 +39,49 @@ var model = {
 
 var appViewModel = {
     $itemsList: $('#fourSquareList'),
+    // Call foursquare
     getFourSquareAPI: function (){
     $.getJSON(model.fourSquareUrl, function(data){
         venues = data.response.venues;
         for (var i = 0; i < venues.length; i++){
             var venue = venues[i];
+            // Write the list of venues to the DOM
             appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
-            model.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePhone: venue.contact.formattedPhone, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
-        };
-    });
+            model.fourSquareLocsList.push({venueTitle: venue.name, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
+            };
+            for (var i = 0; i < model.fourSquareLocsList.length; i++) {
+                // Get the position date from the fourSquareLocsList array
+                var title = model.fourSquareLocsList[i].venueTitle;
+                var position = {lat: model.fourSquareLocsList[i].venueLat, lng: model.fourSquareLocsList[i].venueLng};
+                console.log(position);
+                //Create a marker per location, and put into markers array.
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: position,
+                    title: title,
+                    animation: google.maps.Animation.DROP,
+                    id: i 
+                });
+                console.log(marker);
+            };
+        });
     }
-
 };
 
 appViewModel.getFourSquareAPI();
 
-//var $itemsList = $('#fourSquareList');
-
-
-
-
-for (var i = 0; i < model.fourSquareLocsList.length; i++) {
-    // Get the position from the fourSquareLocsList array.
-    var title = model.fourSquareLocsList[i].venueTitle;
-    var position = [model.fourSquareLocsList[i].venueLat, model.fourSquareLocsList[i].venueLng];
-    console.log("is anything happening?");
-    console.log(title, position);
 
     //Create a marker per location, and put into markers array.
-    var marker = new google.maps.Marker({
+    /*var marker = new google.maps.Marker({
         map: map,
         position: position,
         title: title,
         animation: google.maps.Animation.DROP,
         id: i 
-    });
-    console.log(marker);
-};
-
+    });*/
 
     // Push the marker to our array of markers.
-    model.mapMarkersList.push(marker);
+    //model.mapMarkersList.push(marker);
 
 
 
