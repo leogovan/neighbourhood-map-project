@@ -17,12 +17,13 @@
 				<input data-bind="value: filter, valueUpdate: 'afterkeydown'" type="text" id="filter-box" class="form-control" placeholder="Type here to filter results..." />
 			</form>
 		</div>
-		<div id="fourSquareList" data-bind="foreach: fourSquareList">
+		<div id="fourSquareList" data-bind="foreach: fourSquareLocsList">
 			<h3 data-bind="text: venueTitle"></h3>
-			<h4>Post Code</h4>
-			<p data-bind="text: venuePostCode"></p>
+			<h4>Address</h4>
+			<p data-bind="text: venueAddress"></p>
 			<h4>Distance</h4>
 			<p><span data-bind="text: venueDistance"></span> metres away</p>
+			<hr/>
 		</div>
 
 	</div>

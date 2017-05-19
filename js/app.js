@@ -54,16 +54,16 @@ var appViewModel = {
             var venue = venues[i];
 
             // store the data in observable array
-            appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
+            appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
 
             // write the list of venues to the DOM
             //appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
             
             };
-            for (var i = 0; i < appViewModel.fourSquareLocsList.length; i++) {
+            for (var i = 0; i < appViewModel.fourSquareLocsList().length; i++) {
                 // Get the position date from the fourSquareLocsList array
-                var title = appViewModel.fourSquareLocsList[i].venueTitle;
-                var position = {lat: appViewModel.fourSquareLocsList[i].venueLat, lng: appViewModel.fourSquareLocsList[i].venueLng};
+                var title = appViewModel.fourSquareLocsList()[i].venueTitle;
+                var position = {lat: appViewModel.fourSquareLocsList()[i].venueLat, lng: appViewModel.fourSquareLocsList()[i].venueLng};
                 //Create a marker per location, and put into markers array.
                 var marker = new google.maps.Marker({
                     map: map,
