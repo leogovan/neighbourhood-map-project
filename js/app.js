@@ -39,62 +39,48 @@ var model = {
 
 var appViewModel = {
     
+    // array to store list of map markers
     mapMarkersList: ko.observableArray(),
     
+    // array to store list of fourSquare venues
     fourSquareLocsList: ko.observableArray(),
     
     filter: ko.observable(""),
     
-    //$itemsList: $('#fourSquareList'),
-    // Call foursquare
+    // Call foursquare initially
     getFourSquareAPI: function (){
     $.getJSON(model.fourSquareUrl, function(data){
         venues = data.response.venues;
         for (var i = 0; i < venues.length; i++){
             var venue = venues[i];
-
             // store the data in observable array
             appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng});
-
-            // write the list of venues to the DOM
-            //appViewModel.$itemsList.append('<h3>' + venue.name + '</h3><h4>Address</h4><p>' + venue.location.formattedAddress + '</p><h4>Distance</h4><p>' + venue.location.distance + ' metres away' + '</p><hr>');
             
             };
-            for (var i = 0; i < appViewModel.fourSquareLocsList().length; i++) {
-                // Get the position date from the fourSquareLocsList array
-                var title = appViewModel.fourSquareLocsList()[i].venueTitle;
-                var position = {lat: appViewModel.fourSquareLocsList()[i].venueLat, lng: appViewModel.fourSquareLocsList()[i].venueLng};
-                //Create a marker per location, and put into markers array.
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: position,
-                    title: title,
-                    animation: google.maps.Animation.DROP,
-                    id: i 
-                });
-                appViewModel.mapMarkersList.push(marker);
-            };
+        // Once ajax is complete, create markers from fourSquareLocsList
+        }).done(function(){
+            appViewModel.createMarkers();
         });
     },
+
+    createMarkers: function (){
+        for (var i = 0; i < appViewModel.fourSquareLocsList().length; i++) {
+            // Get the position date from the fourSquareLocsList array
+            var title = appViewModel.fourSquareLocsList()[i].venueTitle;
+            var position = {lat: appViewModel.fourSquareLocsList()[i].venueLat, lng: appViewModel.fourSquareLocsList()[i].venueLng};
+            //Create a marker per location, and put into markers array.
+            var marker = new google.maps.Marker({
+                map: map,
+                position: position,
+                title: title,
+                animation: google.maps.Animation.DROP,
+                id: i 
+            });
+            appViewModel.mapMarkersList.push(marker);
+        };
+    }
 };
 
 appViewModel.getFourSquareAPI();
-
-
-    //Create a marker per location, and put into markers array.
-    /*var marker = new google.maps.Marker({
-        map: map,
-        position: position,
-        title: title,
-        animation: google.maps.Animation.DROP,
-        id: i 
-    });*/
-
-    // Push the marker to our array of markers.
-    //;
-
-
-
-
 
 ko.applyBindings(appViewModel);
