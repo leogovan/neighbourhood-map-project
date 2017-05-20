@@ -54,7 +54,7 @@ var appViewModel = {
         for (var i = 0; i < venues.length; i++){
             var venue = venues[i];
             // store the data in observable array
-            appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng, venueVisible: true});
+            appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng, venueVisible: ko.observable(true)});
             
             };
         // Once ajax is complete, create markers from fourSquareLocsList

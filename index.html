@@ -18,7 +18,7 @@
 			</form>
 		</div>
 		<div id="fourSquareList" data-bind="foreach: fourSquareLocsList">
-			<div> <!-- NEEDS COMPLETING -->
+			<div data-bind="visible: venueVisible">
 				<h3 data-bind="text: venueTitle"></h3>
 				<h4>Address</h4>
 				<p data-bind="text: venueAddress"></p>
