@@ -38,36 +38,44 @@ var model = {
 // ------------- ViewModel ------------- //
 
 var appViewModel = {
-    
     // array to store list of map markers
     mapMarkersList: ko.observableArray(),
     
     // array to store list of fourSquare venues
     fourSquareLocsList: ko.observableArray(),
     
-    filter: ko.observable(""),
+    filterVenues: function (){
+        this.fourSquareLocsList().forEach(function(item){
+            console.log(item);
+            if (item.venueVisible === false) {
+
+            };
+        });
+    },
     
     // Call foursquare initially
     getFourSquareAPI: function (){
-    $.getJSON(model.fourSquareUrl, function(data){
-        venues = data.response.venues;
-        for (var i = 0; i < venues.length; i++){
-            var venue = venues[i];
-            // store the data in observable array
-            appViewModel.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng, venueVisible: ko.observable(true)});
-            
-            };
-        // Once ajax is complete, create markers from fourSquareLocsList
-        }).done(function(){
-            appViewModel.createMarkers();
+        var self = this;
+        $.getJSON(model.fourSquareUrl, function(data){
+            venues = data.response.venues;
+            for (var i = 0; i < venues.length; i++){
+                var venue = venues[i];
+                // store the data in observable array
+                self.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng, venueVisible: ko.observable(true)});
+                
+                };
+            // Once ajax is complete, create markers from fourSquareLocsList
+            }).done(function(){
+                self.createMarkers();
         });
     },
 
     createMarkers: function (){
-        for (var i = 0; i < appViewModel.fourSquareLocsList().length; i++) {
+        var self = this;
+        for (var i = 0; i < self.fourSquareLocsList().length; i++) {
             // Get the position date from the fourSquareLocsList array
-            var title = appViewModel.fourSquareLocsList()[i].venueTitle;
-            var position = {lat: appViewModel.fourSquareLocsList()[i].venueLat, lng: appViewModel.fourSquareLocsList()[i].venueLng};
+            var title = self.fourSquareLocsList()[i].venueTitle;
+            var position = {lat: self.fourSquareLocsList()[i].venueLat, lng: self.fourSquareLocsList()[i].venueLng};
             //Create a marker per location, and put into markers array.
             var marker = new google.maps.Marker({
                 map: map,
@@ -76,7 +84,7 @@ var appViewModel = {
                 animation: google.maps.Animation.DROP,
                 id: i 
             });
-            appViewModel.mapMarkersList.push(marker);
+            self.mapMarkersList.push(marker);
         };
     }
 };
