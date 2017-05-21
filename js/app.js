@@ -53,6 +53,7 @@ var appViewModel = {
 
         });
     },
+    filterInput: ko.observable(''),
     
     // Call foursquare initially
     getFourSquareAPI: function (){
