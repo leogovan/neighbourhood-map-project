@@ -46,9 +46,11 @@ var appViewModel = {
     
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
-            console.log(item);
-            if (item.venueTitle.toLowerCase().indexof(value.toLowerCase()) >= 0) {
-                item.venueVisible = false;
+            console.log("I am the first item.venueVisible: " + item.venueVisible());
+            if (item.venueTitle.toLowerCase().indexOf(appViewModel.filterInput) !== -1) {
+                item.venueVisible(false);
+                console.log("I am the second item.venueVisible: " + item.venueVisible());
+                appViewModel.fourSquareLocsList.push(item);
             };
 
         });

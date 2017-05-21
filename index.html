@@ -14,7 +14,7 @@
 		<div class="form-group">
 			<form class="form-inline">
 				<label for="filter-box" class="sr-only">FILTER</label>
-				<input data-bind="textInput: filterInput" type="text" id="filter-box" class="form-control" placeholder="Type here to filter results..." />
+				<input data-bind="textInput: filterInput, event : {keyup: filterVenues}" type="text" id="filter-box" class="form-control" placeholder="Type here to filter results..." />
 			</form>
 		</div>
 		<div id="fourSquareList" data-bind="foreach: fourSquareLocsList">
