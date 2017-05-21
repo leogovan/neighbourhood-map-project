@@ -47,7 +47,7 @@ var appViewModel = {
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
             console.log(item);
-            if (item.venueVisible === false) {
+            
 
             };
         });
