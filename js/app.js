@@ -1,3 +1,5 @@
+'use strict';
+
 var map;
 function initMap() {
         // Constructor creates a new map - only center and zoom are required.
@@ -36,9 +38,9 @@ var model = {
 
 var infowindow = {};
 
-function infoWindowInstance(){
+/*function infoWindowInstance(){
     infowindow = new google.maps.InfoWindow();
-};
+};*/
 
 //var infoWindow = new google.maps.InfoWindow();
 
@@ -67,6 +69,10 @@ var appViewModel = {
     
     // array to store list of fourSquare venues
     fourSquareLocsList: ko.observableArray(),
+
+    infoWindowInstance: function(){
+        infowindow = new google.maps.InfoWindow();
+    },
     
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
@@ -86,7 +92,7 @@ var appViewModel = {
     getFourSquareAPI: function (){
         var self = this;
         $.getJSON(model.fourSquareUrl, function(data){
-            venues = data.response.venues;
+            var venues = data.response.venues;
             for (var i = 0; i < venues.length; i++){
                 var venue = venues[i];
                 // store the data in observable array
@@ -96,7 +102,7 @@ var appViewModel = {
             // Once ajax is complete, create markers from fourSquareLocsList
             }).done(function(){
                 //self.infowindow;
-                infoWindowInstance();
+                self.infoWindowInstance();
                 console.log(infowindow);
                 self.createMarkers();
         });
