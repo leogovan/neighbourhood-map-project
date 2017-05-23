@@ -1,6 +1,7 @@
 'use strict';
 
 var map;
+var infowindow
 function initMap() {
         // Constructor creates a new map - only center and zoom are required.
         map = new google.maps.Map(document.getElementById('map'), {
@@ -8,6 +9,7 @@ function initMap() {
         	zoom: 14,
         	mapTypeControl: false
         });
+        infowindow = new google.maps.InfoWindow();
 };
 
 
@@ -36,15 +38,9 @@ var model = {
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
-var infowindow = {};
-
-/*function infoWindowInstance(){
-    infowindow = new google.maps.InfoWindow();
-};*/
-
 //var infoWindow = new google.maps.InfoWindow();
 
-function populateInfoWindow(marker, infowindow) {
+/*function populateInfoWindow(marker, infowindow) {
         console.log("I am marker: " + marker);
         console.log("I am infowindow: " + infowindow);
 
@@ -58,7 +54,7 @@ function populateInfoWindow(marker, infowindow) {
             infowindow.marker = null;
           });
         }
-      };
+      },*/
 
 
 // ------------- ViewModel ------------- //
@@ -69,10 +65,6 @@ var appViewModel = {
     
     // array to store list of fourSquare venues
     fourSquareLocsList: ko.observableArray(),
-
-    infoWindowInstance: function(){
-        infowindow = new google.maps.InfoWindow();
-    },
     
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
@@ -87,6 +79,22 @@ var appViewModel = {
         });
     },
     filterInput: ko.observable(''),
+
+    populateInfoWindow: function(marker, infowindow) {
+        console.log("I am marker: " + marker);
+        console.log("I am infowindow: " + infowindow);
+
+        // Check to make sure the infowindow is not already opened on this marker.
+        if (infowindow.marker != marker) {
+            infowindow.marker = marker;
+            infowindow.setContent('<div>' + marker.title + '</div>');
+            infowindow.open(map, marker);
+            // Make sure the marker property is cleared if the infowindow is closed.
+            infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+            });
+        }
+    },
     
     // Call foursquare initially
     getFourSquareAPI: function (){
@@ -102,7 +110,7 @@ var appViewModel = {
             // Once ajax is complete, create markers from fourSquareLocsList
             }).done(function(){
                 //self.infowindow;
-                self.infoWindowInstance();
+                //self.infoWindowInstance();
                 console.log(infowindow);
                 self.createMarkers();
         });
@@ -124,7 +132,7 @@ var appViewModel = {
             });
             marker.addListener('click', function() {
                 console.log("I am self: " + self)
-                populateInfoWindow(self, infowindow);
+                self.populateInfoWindow(self, infowindow);
             });
             
             self.fourSquareLocsList()[i].venueMarker = marker;
