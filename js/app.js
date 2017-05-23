@@ -34,6 +34,30 @@ var model = {
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
+var infowindow = {};
+
+function infoWindowInstance(){
+    infowindow = new google.maps.InfoWindow();
+};
+
+//var infoWindow = new google.maps.InfoWindow();
+
+function populateInfoWindow(marker, infowindow) {
+        console.log("I am marker: " + marker);
+        console.log("I am infowindow: " + infowindow);
+
+        // Check to make sure the infowindow is not already opened on this marker.
+        if (infowindow.marker != marker) {
+          infowindow.marker = marker;
+          infowindow.setContent('<div>' + marker.title + '</div>');
+          infowindow.open(map, marker);
+          // Make sure the marker property is cleared if the infowindow is closed.
+          infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+          });
+        }
+      };
+
 
 // ------------- ViewModel ------------- //
 
@@ -46,11 +70,12 @@ var appViewModel = {
     
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
-            console.log("I am the first item.venueVisible: " + item.venueVisible());
-            if (item.venueTitle.toLowerCase().indexOf(appViewModel.filterInput) !== -1) {
+            if (item.venueTitle.toLowerCase().indexOf(appViewModel.filterInput()) === -1) {
                 item.venueVisible(false);
-                console.log("I am the second item.venueVisible: " + item.venueVisible());
-                appViewModel.fourSquareLocsList.push(item);
+                item.venueMarker.setVisible(false);
+            } else {
+                item.venueVisible(true)
+                item.venueMarker.setVisible(true);
             };
 
         });
@@ -70,6 +95,9 @@ var appViewModel = {
                 };
             // Once ajax is complete, create markers from fourSquareLocsList
             }).done(function(){
+                //self.infowindow;
+                infoWindowInstance();
+                console.log(infowindow);
                 self.createMarkers();
         });
     },
@@ -86,9 +114,14 @@ var appViewModel = {
                 position: position,
                 title: title,
                 animation: google.maps.Animation.DROP,
-                id: i 
+                id: i
             });
-            self.mapMarkersList.push(marker);
+            marker.addListener('click', function() {
+                console.log("I am self: " + self)
+                populateInfoWindow(self, infowindow);
+            });
+            
+            self.fourSquareLocsList()[i].venueMarker = marker;
         };
     }
 };
