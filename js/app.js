@@ -132,7 +132,7 @@ var appViewModel = {
             });
             marker.addListener('click', function() {
                 console.log("I am self: " + self)
-                self.populateInfoWindow(self, infowindow);
+                self.populateInfoWindow(this, infowindow);
             });
             
             self.fourSquareLocsList()[i].venueMarker = marker;
