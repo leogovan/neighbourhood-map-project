@@ -10,7 +10,7 @@ function initMap() {
         	mapTypeControl: false
         });
         infowindow = new google.maps.InfoWindow();
-};
+    };
 
 
     /* Opens the drawer when the menu icon is clicked */
@@ -35,13 +35,10 @@ function initMap() {
 // ------------- Model ------------- //
 
 var model = {
-    // Empty list to store my infobox data from foursquare
-    //fourSquareLocsList: [],
-    // Empty list to store the lat/lng for my map markers
-    //mapMarkersList: [],
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
+var listItem = document.querySelector('.list-item');
 
 // ------------- ViewModel ------------- //
 
@@ -67,9 +64,6 @@ var appViewModel = {
     filterInput: ko.observable(''),
 
     populateInfoWindow: function(marker, infowindow) {
-        console.log("I am marker: " + marker);
-        console.log("I am infowindow: " + infowindow);
-
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
@@ -77,7 +71,7 @@ var appViewModel = {
             infowindow.open(map, marker);
             // Make sure the marker property is cleared if the infowindow is closed.
             infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
+                infowindow.marker = null;
             });
         }
     },
@@ -91,12 +85,15 @@ var appViewModel = {
                 var venue = venues[i];
                 // store the data in observable array
                 self.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng, venueVisible: ko.observable(true)});
+                listItem.addEventListener('click', function() {
+                    appViewModel.populateInfoWindow(this, infowindow);
+                    console.log("I am working");
+                });
                 
-                };
+            };
             // Once ajax is complete, create markers from fourSquareLocsList
-            }).done(function(){
-                console.log(infowindow);
-                self.createMarkers();
+        }).done(function(){
+            self.createMarkers();
         });
     },
 
@@ -115,10 +112,8 @@ var appViewModel = {
                 id: i
             });
             marker.addListener('click', function() {
-                console.log("I am self: " + self)
                 self.populateInfoWindow(this, infowindow);
             });
-            
             self.fourSquareLocsList()[i].venueMarker = marker;
         };
     }
