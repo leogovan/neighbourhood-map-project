@@ -84,15 +84,22 @@ var appViewModel = {
             for (var i = 0; i < venues.length; i++){
                 var venue = venues[i];
                 // store the data in observable array
-                self.fourSquareLocsList.push({venueTitle: venue.name, venueAddress: venue.location.formattedAddress, venuePostCode: venue.location.postalCode, venueDistance: venue.location.distance,venueLat: venue.location.lat, venueLng: venue.location.lng, venueVisible: ko.observable(true)});
-                listItem.addEventListener('click', function() {
-                    appViewModel.populateInfoWindow(this, infowindow);
-                    console.log("I am working");
+                self.fourSquareLocsList.push({
+                    venueTitle: venue.name,
+                    venueAddress: venue.location.formattedAddress,
+                    venuePostCode: venue.location.postalCode,
+                    venueDistance: venue.location.distance,
+                    venueLat: venue.location.lat,
+                    venueLng: venue.location.lng,
+                    venueVisible: ko.observable(true),
                 });
-                
             };
             // Once ajax is complete, create markers from fourSquareLocsList
         }).done(function(){
+            listItem.addEventListener('click', function() {
+                    appViewModel.populateInfoWindow(this, infowindow);
+                    console.log("I am working");
+                });
             self.createMarkers();
         });
     },
