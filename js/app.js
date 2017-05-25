@@ -18,6 +18,7 @@ function initMap() {
     var menu = document.querySelector('#menu');
     var main = document.querySelector('main');
     var drawer = document.querySelector('#drawer');
+    var close = document.querySelector('#box');
 
     menu.addEventListener('click', function(e) {
     	drawer.classList.toggle('open');
@@ -25,6 +26,9 @@ function initMap() {
     });
     main.addEventListener('click', function() {
     	drawer.classList.remove('open');
+    });
+    close.addEventListener('click', function() {
+        drawer.classList.remove('open');
     });
 
 
@@ -37,24 +41,6 @@ var model = {
     //mapMarkersList: [],
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
-
-//var infoWindow = new google.maps.InfoWindow();
-
-/*function populateInfoWindow(marker, infowindow) {
-        console.log("I am marker: " + marker);
-        console.log("I am infowindow: " + infowindow);
-
-        // Check to make sure the infowindow is not already opened on this marker.
-        if (infowindow.marker != marker) {
-          infowindow.marker = marker;
-          infowindow.setContent('<div>' + marker.title + '</div>');
-          infowindow.open(map, marker);
-          // Make sure the marker property is cleared if the infowindow is closed.
-          infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
-          });
-        }
-      },*/
 
 
 // ------------- ViewModel ------------- //
@@ -109,8 +95,6 @@ var appViewModel = {
                 };
             // Once ajax is complete, create markers from fourSquareLocsList
             }).done(function(){
-                //self.infowindow;
-                //self.infoWindowInstance();
                 console.log(infowindow);
                 self.createMarkers();
         });

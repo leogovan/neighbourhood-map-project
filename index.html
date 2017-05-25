@@ -17,6 +17,11 @@
 				<input data-bind="textInput: filterInput, event : {keyup: filterVenues}" type="text" id="filter-box" class="form-control" placeholder="Type here to filter results..." />
 			</form>
 		</div>
+		<div class="box" id="box">
+			<svg viewbox="0 0 40 40">
+				<path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+			</svg>
+		</div>
 		<div id="fourSquareList" data-bind="foreach: fourSquareLocsList">
 			<div data-bind="visible: venueVisible">
 				<h3 data-bind="text: venueTitle"></h3>
