@@ -96,10 +96,6 @@ var appViewModel = {
             };
             // Once ajax is complete, create markers from fourSquareLocsList
         }).done(function(){
-            listItem.addEventListener('click', function() {
-                    appViewModel.populateInfoWindow(this, infowindow);
-                    console.log("I am working");
-                });
             self.createMarkers();
         });
     },
@@ -123,6 +119,14 @@ var appViewModel = {
             });
             self.fourSquareLocsList()[i].venueMarker = marker;
         };
+    },
+
+    myClickEventHandler: function(){
+        var self = this;
+        console.log("I am self: ", self);
+        console.log("I am this: ", this);
+        appViewModel.populateInfoWindow(this, infowindow);
+        console.log("I am working");
     }
 };
 

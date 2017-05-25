@@ -23,7 +23,7 @@
 			</svg>
 		</div>
 		<div id="fourSquareList" data-bind="foreach: fourSquareLocsList">
-			<div data-bind="visible: venueVisible" class="list-item">
+			<div data-bind="visible: venueVisible, click: $parent.myClickEventHandler" class="list-item" >
 				<h3 data-bind="text: venueTitle"></h3>
 				<h4>Address</h4>
 				<p data-bind="text: venueAddress"></p>
