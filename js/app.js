@@ -116,29 +116,28 @@ var appViewModel = {
             });
             marker.addListener('click', function() {
                 self.populateInfoWindow(this, infowindow);
-                /*self.makeBounce();*/
-            });
+                console.log("I am marker: ", marker);
+                appViewModel.makeBounce(marker);
+
+
+          });
             self.fourSquareLocsList()[i].venueMarker = marker;
         };
     },
 
-    /*makeBounce: function(){
-        console.log(appViewModel.fourSquareLocsList().venueMarker);
-        if (appViewModel.marker.getAnimation() !== null) {
-          appViewModel.marker.setAnimation(null);
+    makeBounce: function(marker){
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
       } else {
-          appViewModel.marker.setAnimation(google.maps.Animation.BOUNCE);
+          marker.setAnimation(google.maps.Animation.BOUNCE);
       };
-  },*/
+  },
 
   myClickEventHandler: function(){
     var self = this;
-        console.log("I am self: ", self);
-        console.log("I am this: ", this);
-        //console.log("I am location: ", location)
-        appViewModel.populateInfoWindow(this.venueMarker, infowindow);
-        console.log("I am working");
-    }
+    appViewModel.populateInfoWindow(this.venueMarker, infowindow);
+    appViewModel.makeBounce(this.venueMarker);
+}
 };
 
 appViewModel.getFourSquareAPI();
