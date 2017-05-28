@@ -1,32 +1,41 @@
 'use strict';
 
-var map;
-var infowindow
+
+// global map and infowindow variables
+var map,
+    infowindow;
+
+
+// initialise the google map
 function initMap() {
-        // Constructor creates a new map - only center and zoom are required.
-        map = new google.maps.Map(document.getElementById('map'), {
-        	center: {lat: 51.439727, lng: -0.0553157},
-        	zoom: 14,
-        	mapTypeControl: false
-        });
-        infowindow = new google.maps.InfoWindow();
-    };
+    map = new google.maps.Map(document.getElementById('map'), {
+       center: {lat: 51.439727, lng: -0.0553157},
+       zoom: 14,
+       mapTypeControl: false
+   });
+    infowindow = new google.maps.InfoWindow();
+};
 
 
-    /* Opens the drawer when the menu icon is clicked */
+// variables to collect DOM elements
+var menu = document.querySelector('#menu'),
+    main = document.querySelector('main'),
+    drawer = document.querySelector('#drawer'),
+    close = document.querySelector('#box');
+    //listItem = document.querySelector('.list-item')
 
-    var menu = document.querySelector('#menu');
-    var main = document.querySelector('main');
-    var drawer = document.querySelector('#drawer');
-    var close = document.querySelector('#box');
-
+    // Opens the side-drawer when the menu icon is clicked
     menu.addEventListener('click', function(e) {
     	drawer.classList.toggle('open');
     	e.stopPropagation();
     });
+
+    // Closes the side-drawer when the user clicks outside of the drawer area
     main.addEventListener('click', function() {
     	drawer.classList.remove('open');
     });
+
+    // Closes the side-drawer when the close icon is clicked
     close.addEventListener('click', function() {
         drawer.classList.remove('open');
     });
@@ -38,17 +47,14 @@ var model = {
     fourSquareUrl: "https://api.foursquare.com/v2/venues/search?v=20161016&ll=51.439727%2C%20-0.0553157&query=cafe&limit=20&intent=checkin&radius=1500&client_id=1YB1LHRYRGHEHPW3O4FC4UBDTZYEZWE4DTGUBD3NZ01C2BDY&client_secret=3W51M0JUXM4FGIP1GR2LN11AEKAIXHC5RDGE5N33DMUXXAJG"
 };
 
-var listItem = document.querySelector('.list-item');
-
 // ------------- ViewModel ------------- //
 
 var appViewModel = {
-    // array to store list of map markers
-    mapMarkersList: ko.observableArray(),
-    
+
     // array to store list of fourSquare venues
     fourSquareLocsList: ko.observableArray(),
     
+    // filter 
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
             if (item.venueTitle.toLowerCase().indexOf(appViewModel.filterInput()) === -1) {
@@ -116,11 +122,9 @@ var appViewModel = {
             });
             marker.addListener('click', function() {
                 self.populateInfoWindow(this, infowindow);
-                console.log("I am marker: ", marker);
-                self.makeBounce(marker);
+                self.makeBounce(this);
 
-
-          });
+            });
             self.fourSquareLocsList()[i].venueMarker = marker;
         };
     },
