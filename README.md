@@ -1,7 +1,5 @@
 # frontend-nanodegree-neighbourhood-map
 
-===============================
-
 ## Description
 
 This is my project for the Udacity Frontend Nanodegree: Neighbourhood Map.
@@ -22,13 +20,9 @@ The application utilises knockout.js and:
 
 The UI is responsive.
 
-===============================
-
 ## How to run locally
 
 1. Download from [github.com](https://github.com/leogovan/neighbourhood-map-project)
 2. Unzip contents of the file onto your computer
 3. Click on index.html to run this in your chosen web browser
 4. Start using!
-
-===============================
