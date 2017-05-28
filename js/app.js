@@ -117,7 +117,7 @@ var appViewModel = {
             marker.addListener('click', function() {
                 self.populateInfoWindow(this, infowindow);
                 console.log("I am marker: ", marker);
-                appViewModel.makeBounce(marker);
+                self.makeBounce(marker);
 
 
           });
