@@ -1,6 +1,5 @@
 'use strict';
 
-
 // global map and infowindow variables
 var map,
     infowindow;
@@ -16,13 +15,16 @@ function initMap() {
     infowindow = new google.maps.InfoWindow();
 };
 
+// error message in case there's a problem with google maps
+function googleError(){
+    alert("Sorry, an error occured with Google Maps. Please try again later.");
+};
 
 // variables to collect DOM elements
 var menu = document.querySelector('#menu'),
     main = document.querySelector('main'),
     drawer = document.querySelector('#drawer'),
     close = document.querySelector('#box');
-    //listItem = document.querySelector('.list-item')
 
     // Opens the side-drawer when the menu icon is clicked
     menu.addEventListener('click', function(e) {
@@ -53,8 +55,12 @@ var appViewModel = {
 
     // array to store list of fourSquare venues
     fourSquareLocsList: ko.observableArray(),
+
+
+    // make the form field an observable
+    filterInput: ko.observable(''),
     
-    // filter 
+    // filter list items when the user inputs text to the form field
     filterVenues: function (){
         this.fourSquareLocsList().forEach(function(item){
             if (item.venueTitle.toLowerCase().indexOf(appViewModel.filterInput()) === -1) {
@@ -67,13 +73,15 @@ var appViewModel = {
 
         });
     },
-    filterInput: ko.observable(''),
 
+    // open and populate the infowindow
     populateInfoWindow: function(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
+            // write the name of the cafe into the infowindow
             infowindow.setContent('<div>' + marker.title + '</div>');
+            // instruct the infowindow to open
             infowindow.open(map, marker);
             // Make sure the marker property is cleared if the infowindow is closed.
             infowindow.addListener('closeclick', function() {
@@ -86,10 +94,15 @@ var appViewModel = {
     getFourSquareAPI: function (){
         var self = this;
         $.getJSON(model.fourSquareUrl, function(data){
+            
+            // store the JSON response (data) into the venues variable
             var venues = data.response.venues;
+            
+            // loop through the response and grab some property values
             for (var i = 0; i < venues.length; i++){
                 var venue = venues[i];
-                // store the data in observable array
+                
+                // store the data in the observable array
                 self.fourSquareLocsList.push({
                     venueTitle: venue.name,
                     venueAddress: venue.location.formattedAddress,
@@ -97,22 +110,35 @@ var appViewModel = {
                     venueDistance: venue.location.distance,
                     venueLat: venue.location.lat,
                     venueLng: venue.location.lng,
+                    
+                    // venueVisible is tracked by KO so that filterVenues() can switch a given array item's visibility on/off
                     venueVisible: ko.observable(true),
                 });
             };
+            
             // Once ajax is complete, create markers from fourSquareLocsList
         }).done(function(){
             self.createMarkers();
+            
+            // If the call fails for some reason, let the user know
+        }).fail(function() {
+            alert( "Unable to contact FourSquare to show you some awesome cafes - please try again later");
         });
     },
 
+    // function to create map markers, add a listener to each marker and initiate a bounce animation
     createMarkers: function (){
         var self = this;
+        // loops through each array item of already-parsed foursquare data
         for (var i = 0; i < self.fourSquareLocsList().length; i++) {
-            // Get the position date from the fourSquareLocsList array
+            
+            // get the venue name
             var title = self.fourSquareLocsList()[i].venueTitle;
+            
+            // get the venue position data (we'll need this to pass to the map markers)
             var position = {lat: self.fourSquareLocsList()[i].venueLat, lng: self.fourSquareLocsList()[i].venueLng};
-            //Create a marker per location, and put into markers array.
+            
+            // create a marker per location and set the property values
             var marker = new google.maps.Marker({
                 map: map,
                 position: position,
@@ -120,15 +146,23 @@ var appViewModel = {
                 animation: google.maps.Animation.DROP,
                 id: i
             });
+
+            // add listener to each marker so that when clicked...
             marker.addListener('click', function() {
+
+                // ... it runs populateInfoWindow()...
                 self.populateInfoWindow(this, infowindow);
+
+                // ... and makeBounce()
                 self.makeBounce(this);
 
             });
+
             self.fourSquareLocsList()[i].venueMarker = marker;
         };
     },
 
+    // function that runs when a marker or list item is clicked: makes the marker bounce!
     makeBounce: function(marker){
         if (marker.getAnimation() !== null) {
           marker.setAnimation(null);
@@ -137,13 +171,20 @@ var appViewModel = {
       };
   },
 
-  myClickEventHandler: function(){
-    var self = this;
-    appViewModel.populateInfoWindow(this.venueMarker, infowindow);
-    appViewModel.makeBounce(this.venueMarker);
-}
+
+    // KO click handler function initiated when a list item is clicked
+    myClickEventHandler: function(){
+        var self = this;
+
+        // runs populateInfoWindow()
+        appViewModel.populateInfoWindow(this.venueMarker, infowindow);
+
+        // runs makeBounce()
+        appViewModel.makeBounce(this.venueMarker);
+    }
 };
 
+// call to foursquare to start the process
 appViewModel.getFourSquareAPI();
 
 ko.applyBindings(appViewModel);
