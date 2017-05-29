@@ -13,12 +13,12 @@ function initMap() {
        mapTypeControl: false
    });
     infowindow = new google.maps.InfoWindow();
-};
+}
 
 // error message in case there's a problem with google maps
 function googleError(){
     alert("Sorry, an error occured with Google Maps. Please try again later.");
-};
+}
 
 // variables to collect DOM elements
 var menu = document.querySelector('#menu'),
@@ -28,13 +28,13 @@ var menu = document.querySelector('#menu'),
 
     // Opens the side-drawer when the menu icon is clicked
     menu.addEventListener('click', function(e) {
-    	drawer.classList.toggle('open');
-    	e.stopPropagation();
+        drawer.classList.toggle('open');
+        e.stopPropagation();
     });
 
     // Closes the side-drawer when the user clicks outside of the drawer area
     main.addEventListener('click', function() {
-    	drawer.classList.remove('open');
+        drawer.classList.remove('open');
     });
 
     // Closes the side-drawer when the close icon is clicked
@@ -67,9 +67,9 @@ var appViewModel = {
                 item.venueVisible(false);
                 item.venueMarker.setVisible(false);
             } else {
-                item.venueVisible(true)
+                item.venueVisible(true);
                 item.venueMarker.setVisible(true);
-            };
+            }
 
         });
     },
@@ -115,7 +115,7 @@ var appViewModel = {
                     // venueVisible is tracked by KO so that filterVenues() can switch a given array item's visibility on/off
                     venueVisible: ko.observable(true),
                 });
-            };
+            }
             
             // Once ajax is complete, create markers from fourSquareLocsList
         }).done(function(){
@@ -166,17 +166,16 @@ var appViewModel = {
             });
 
             self.fourSquareLocsList()[i].venueMarker = marker;
-        };
+        }
     },
 
     // function that runs when a marker or list item is clicked: makes the marker bounce!
     makeBounce: function(marker){
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-      } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-      };
-  },
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function(){
+            marker.setAnimation(null);
+        }, 1400);
+    },
 
 
     // KO click handler function initiated when a list item is clicked
