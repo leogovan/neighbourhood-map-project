@@ -136,8 +136,10 @@ var appViewModel = {
             // get the venue name
             var title = self.fourSquareLocsList()[i].venueTitle;
 
+            // ger venue address
             var address = self.fourSquareLocsList()[i].venueAddress;
 
+            // get venue distance from initial centre of map
             var distance = self.fourSquareLocsList()[i].venueDistance;
             
             // get the venue position data (we'll need this to pass to the map markers)
@@ -169,9 +171,10 @@ var appViewModel = {
         }
     },
 
-    // function that runs when a marker or list item is clicked: makes the marker bounce!
+    // function that runs when a marker or list item is clicked: makes the marker bounce and then stop bouncing
     makeBounce: function(marker){
         marker.setAnimation(google.maps.Animation.BOUNCE);
+        // stop the marker from bouncing after 1400ms
         setTimeout(function(){
             marker.setAnimation(null);
         }, 1400);
