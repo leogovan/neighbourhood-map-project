@@ -80,7 +80,8 @@ var appViewModel = {
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
             // write the name of the cafe into the infowindow
-            infowindow.setContent('<div>' + marker.title + '</div>');
+            infowindow.setContent('<h5>' + marker.title + '</h5><p>Address:</p><div>' + marker.address + '</div><p>Distance:</p><div>' + marker.distance + ' metres away' + '</div>');
+            console.log(marker);
             // instruct the infowindow to open
             infowindow.open(map, marker);
             // Make sure the marker property is cleared if the infowindow is closed.
@@ -134,6 +135,10 @@ var appViewModel = {
             
             // get the venue name
             var title = self.fourSquareLocsList()[i].venueTitle;
+
+            var address = self.fourSquareLocsList()[i].venueAddress;
+
+            var distance = self.fourSquareLocsList()[i].venueDistance;
             
             // get the venue position data (we'll need this to pass to the map markers)
             var position = {lat: self.fourSquareLocsList()[i].venueLat, lng: self.fourSquareLocsList()[i].venueLng};
@@ -143,6 +148,8 @@ var appViewModel = {
                 map: map,
                 position: position,
                 title: title,
+                address: address,
+                distance: distance,
                 animation: google.maps.Animation.DROP,
                 id: i
             });
